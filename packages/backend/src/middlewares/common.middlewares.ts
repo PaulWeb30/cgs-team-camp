@@ -25,7 +25,7 @@ export const isExist =
     try {
       const { id } = req.params;
       const repository = AppDataSource.getRepository(entityClass);
-      const entity = await repository.findOneBy({ id: id as any });
+      const entity = await repository.findOneBy({ id });
 
       if (!entity) {
         return res.status(404).json({ message: 'Entity not found' });
