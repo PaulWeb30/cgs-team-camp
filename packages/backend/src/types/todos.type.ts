@@ -1,5 +1,11 @@
-// TODO: Put a real interfaces here
+export enum TodoStatus {
+  COMPLETED = 'completed',
+  PENDING = 'pending'
+}
 
 export interface ITodo {
-  data: string;
+  title: string;
+  description: string;
+  isPrivate: boolean;
+  status: TodoStatus;
 }

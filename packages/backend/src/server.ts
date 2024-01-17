@@ -5,15 +5,19 @@ import 'dotenv/config';
 import AppRouter from './routes';
 import connectDB from './config/database';
 
+import { errorHandler } from './utils/errorHandler';
+
 const app = express();
 const router = new AppRouter(app);
-// Connect to MongoDB
+
+// Connect to PostgreSql
 connectDB();
 
 // Express configuration
 app.set('port', process.env.PORT || 4200);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(errorHandler);
 
 router.init();
 

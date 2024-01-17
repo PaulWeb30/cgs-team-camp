@@ -24,5 +24,7 @@
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "joi": "^17.11.1"
+  }
 }
