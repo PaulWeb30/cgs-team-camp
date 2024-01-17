@@ -1,8 +1,7 @@
 import { ObjectSchema } from 'joi';
 import { Response, Request, NextFunction } from 'express';
-import TodoService from '../services/todo.service';
-
-const todoService = new TodoService();
+import { EntityTarget } from 'typeorm';
+import { AppDataSource } from '../config/database';
 
 export const checkIsBodyValid =
   (validatorType: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
@@ -21,17 +20,19 @@ export const checkIsBodyValid =
     }
   };
 
-export const isExist = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { id } = req.params;
-    const todo = await todoService.findOne({ id });
+export const isExist =
+  (entityClass: EntityTarget<any>) => async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const repository = AppDataSource.getRepository(entityClass);
+      const entity = await repository.findOneBy({ id: id as any });
 
-    if (!todo) {
-      return res.status(404).json({ message: 'No existing object' });
+      if (!entity) {
+        return res.status(404).json({ message: 'Entity not found' });
+      }
+
+      next();
+    } catch (e) {
+      next(e);
     }
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-};
+  };
