@@ -1,6 +1,6 @@
 import { ObjectSchema } from 'joi';
 import { Response, Request, NextFunction } from 'express';
-import { EntityTarget } from 'typeorm';
+import { EntityTarget, Repository, FindOptionsWhere } from 'typeorm';
 import { AppDataSource } from '../config/database';
 
 export const checkIsBodyValid =
@@ -20,12 +20,21 @@ export const checkIsBodyValid =
     }
   };
 
+type EntityType = {
+  id: string;
+};
+
 export const isExist =
-  (entityClass: EntityTarget<any>) => async (req: Request, res: Response, next: NextFunction) => {
+  <T extends EntityType>(entityClass: EntityTarget<T>) =>
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const repository = AppDataSource.getRepository(entityClass);
-      const entity = await repository.findOneBy({ id });
+
+      const repository: Repository<T> = AppDataSource.getRepository(entityClass);
+
+      const query: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
+
+      const entity = await repository.findOneBy(query);
 
       if (!entity) {
         return res.status(404).json({ message: 'Entity not found' });
