@@ -1,41 +1,48 @@
 import { ITodo } from '../common/types/todo.types';
 import { HttpService } from './http.service';
+import { APP_KEYS } from '../common/consts';
 
-export class UserService extends HttpService {
+class TodoService extends HttpService {
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor() {
     super();
   }
 
-  getTodos() {
+  getTodos(): Promise<ITodo[]> {
+    return this.get(
+      {
+        url: APP_KEYS.BACKEND_KEYS.ROOT
+      },
+      false
+    );
+  }
+
+  getTodo(id: string): Promise<ITodo> {
     return this.get({
-      url: 'todos'
+      url: APP_KEYS.BACKEND_KEYS.TODO(id)
     });
   }
 
-  getTodo(id: string) {
-    return this.get({
-      url: `todos/${id}`
-    });
-  }
-
-  createTodo(todo: ITodo) {
+  createTodo(todo: ITodo): Promise<ITodo> {
     return this.post({
-      url: 'todos/create',
+      url: APP_KEYS.BACKEND_KEYS.CREATE,
       data: todo
     });
   }
 
-  updateTodo(id: string, todo: ITodo) {
+  updateTodo(id: string, todo: ITodo): Promise<ITodo> {
     return this.put({
-      url: `todos/update/${id}`,
+      url: APP_KEYS.BACKEND_KEYS.UPDATE(id),
       data: todo
     });
   }
 
-  deleteTodo(id: string) {
+  deleteTodo(id: string): Promise<string> {
     return this.delete({
-      url: `todo/${id}`
+      url: APP_KEYS.BACKEND_KEYS.DELETE(id)
     });
   }
 }
+
+const todoService = new TodoService();
+export default todoService;

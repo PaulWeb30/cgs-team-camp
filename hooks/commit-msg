@@ -6,7 +6,7 @@ echo "Checking commit name..."
 INPUT_FILE=$1
 START_LINE=`head -n1 $INPUT_FILE`
 
-PATTERN="^(feat|bug|ref):[[:space:]][A-Z]+[a-z[:space:]]+$"
+PATTERN="^(feat|bug|ref):[[:space:]][A-Z]+[a-z[:space:]]"
 
 if [[ ! $START_LINE =~ $PATTERN ]]; then
   echo "

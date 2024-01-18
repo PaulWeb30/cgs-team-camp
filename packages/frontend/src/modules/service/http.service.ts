@@ -8,7 +8,7 @@ export class HttpService {
   private apiVersion: string;
 
   constructor(
-    baseUrl: string = process.env.SERVER_URL as string,
+    baseUrl: string = process.env.SERVER_URL || 'http://localhost:4200',
     fetchingService: AxiosInstance = axios,
     apiVersion: string = 'api'
   ) {
@@ -39,10 +39,9 @@ export class HttpService {
         ...this.populateTokenToHeaderConfig()
       };
     }
-    return this.fetchingService.get(
-      this.getFullApiUrl(config.url as string),
-      this.extractUrlAndDataFromConfig(config)
-    );
+    return this.fetchingService
+      .get(this.getFullApiUrl(config.url as string), this.extractUrlAndDataFromConfig(config))
+      .then((res) => res.data);
   }
 
   put(config: AxiosRequestConfig, withAuth: boolean = true): Promise<any> {
@@ -52,11 +51,13 @@ export class HttpService {
         ...this.populateTokenToHeaderConfig()
       };
     }
-    return this.fetchingService.put(
-      this.getFullApiUrl(config.url as string),
-      config.data,
-      this.extractUrlAndDataFromConfig(config)
-    );
+    return this.fetchingService
+      .put(
+        this.getFullApiUrl(config.url as string),
+        config.data,
+        this.extractUrlAndDataFromConfig(config)
+      )
+      .then((res) => res.data);
   }
 
   post(config: AxiosRequestConfig, withAuth: boolean = true) {
@@ -66,11 +67,13 @@ export class HttpService {
         ...this.populateTokenToHeaderConfig()
       };
     }
-    return this.fetchingService.post(
-      this.getFullApiUrl(config.url as string),
-      config.data,
-      this.extractUrlAndDataFromConfig(config)
-    );
+    return this.fetchingService
+      .post(
+        this.getFullApiUrl(config.url as string),
+        config.data,
+        this.extractUrlAndDataFromConfig(config)
+      )
+      .then((res) => res.data);
   }
 
   delete(config: AxiosRequestConfig, withAuth: boolean = true) {
@@ -80,6 +83,8 @@ export class HttpService {
         ...this.populateTokenToHeaderConfig()
       };
     }
-    return this.fetchingService.delete(this.getFullApiUrl(config.url as string), config.data);
+    return this.fetchingService
+      .delete(this.getFullApiUrl(config.url as string), config.data)
+      .then((res) => res.data);
   }
 }

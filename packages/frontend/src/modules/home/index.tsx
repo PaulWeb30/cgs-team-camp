@@ -1,5 +1,6 @@
 import React from 'react';
+import { Container } from '../todos/todos.styled';
 
-const HomePageContainer = () => <div>React is ready HOME</div>;
+const HomePageContainer = () => <Container>React is ready HOME</Container>;
 
 export default HomePageContainer;

@@ -4,6 +4,7 @@ export enum TodoStatus {
 }
 
 export interface ITodo {
+  id: number;
   title: string;
   description: string;
   isPrivate: boolean;
