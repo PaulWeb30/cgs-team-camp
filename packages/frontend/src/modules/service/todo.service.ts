@@ -23,7 +23,7 @@ class TodoService extends HttpService {
     });
   }
 
-  createTodo(todo: ITodo): Promise<ITodo> {
+  createTodo(todo: { title: string; description: string }): Promise<ITodo> {
     return this.post({
       url: APP_KEYS.BACKEND_KEYS.CREATE,
       data: todo

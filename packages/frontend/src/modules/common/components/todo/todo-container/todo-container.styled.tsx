@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS, DEVICE, SPACES } from '../theme';
+import { DEVICE, SPACES } from '../../../../theme';
 
 export const Container = styled.div`
   padding: ${SPACES.sm};
@@ -11,20 +11,12 @@ export const Container = styled.div`
   }
 `;
 
-export const SliderContainer = styled('div')`
-  position: relative;
-`;
-
-export const CreateButton = styled.button`
+export const ProfileButton = styled.button`
   width: 120px;
   height: 50px;
   background-color: transparent;
+  color: black;
   margin-bottom: ${SPACES.md};
   display: block;
   cursor: pointer;
-`;
-
-export const TodosTable = styled('div')`
-  border: 2px solid ${COLORS.black};
-  margin-bottom: ${SPACES.sm};
 `;

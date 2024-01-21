@@ -8,7 +8,8 @@ export const STORAGE_KEYS = {
 
 // React-query keys
 export const QUERY_KEYS = {
-  TODOS: 'todos'
+  TODOS: 'todos',
+  TODO: 'todo'
 };
 
 // Backend Routes
@@ -24,5 +25,5 @@ export const ROUTER_KEYS = {
   ROOT: '/',
   HOME: '/home',
   TODOS: '/todos',
-  TODO: '/todo/:id'
+  TODO: '/todos/:id'
 };
