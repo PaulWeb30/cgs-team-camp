@@ -1,12 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import HomePageContainer from '../home';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import HomePageContainer from '../pages/home';
+import { TodoPage } from '../pages/todo';
 import { APP_KEYS } from '../common/consts';
 
-export const MainRouter = () => (
-  <Router>
-    <Switch>
-      <Route component={HomePageContainer} path={APP_KEYS.ROUTER_KEYS.ROOT} />
-    </Switch>
-  </Router>
-);
+const router = createBrowserRouter([
+  {
+    path: APP_KEYS.ROUTER_KEYS.ROOT,
+    element: <HomePageContainer />
+  },
+
+  {
+    path: APP_KEYS.ROUTER_KEYS.TODO,
+    element: <TodoPage />
+  }
+]);
+
+export const MainRouter = () => <RouterProvider router={router} />;

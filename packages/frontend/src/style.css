@@ -16,8 +16,3 @@ body {
 iframe {
   display: none;
 }
-
-.swiper {
-  left: 125px;
-  overflow: visible;
-}

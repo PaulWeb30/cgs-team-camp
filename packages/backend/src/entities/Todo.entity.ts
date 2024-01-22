@@ -26,6 +26,11 @@ export class Todo extends BaseEntity {
   })
   status: string;
 
+  @Column({
+    default: false
+  })
+  isCompleted: boolean;
+
   @ManyToOne(() => User, (user) => user.todos)
   author: User;
 }

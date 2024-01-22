@@ -3,7 +3,11 @@ import { ITodo } from '../types/todos.type';
 
 export default class TodoService {
   async findAll() {
-    const todos = await Todo.find();
+    const todos = await Todo.find({
+      order: {
+        id: 'ASC'
+      }
+    });
     return todos;
   }
 

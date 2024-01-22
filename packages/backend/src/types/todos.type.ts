@@ -8,4 +8,5 @@ export interface ITodo {
   description: string;
   isPrivate: boolean;
   status: TodoStatus;
+  isCompleted: boolean;
 }
