@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useMutation, useQueryClient } from 'react-query';
+
 import {
   ModalContainer,
   Overlay,
@@ -14,9 +14,9 @@ import {
   ModalHeader,
   ModalTitle
 } from './todo-modal.styled';
-import todoService from '../../../../service/todo.service';
-import { APP_KEYS } from '../../../consts';
+
 import { ITodo } from '../../../types/todo.types';
+import { useTodo } from '../../../../hooks/useTodo';
 
 type TodoModalProps = {
   onClose: (state: boolean) => void;
@@ -25,16 +25,9 @@ type TodoModalProps = {
 };
 
 export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProps) => {
+  const { updateTodo, createTodo } = useTodo(String(todoInitials?.id));
+
   const [errorMsg, setErrorMsg] = useState<string>('');
-  const queryClient = useQueryClient();
-
-  const createTodo = useMutation((data: { title: string; description: string }) =>
-    todoService.createTodo(data)
-  );
-
-  const updateTodo = useMutation((variables: { id: number; todo: ITodo }) =>
-    todoService.updateTodo(String(variables.id), variables.todo)
-  );
 
   const formik = useFormik({
     initialValues: {
@@ -44,16 +37,13 @@ export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProp
     onSubmit: async (values) => {
       try {
         if (isCreateMode) {
-          await createTodo.mutateAsync(values);
+          createTodo(values);
         } else {
-          await updateTodo.mutateAsync({
-            id: todoInitials?.id!,
-            todo: { ...todoInitials, ...values } as ITodo
+          updateTodo({
+            id: todoInitials?.id,
+            data: { ...todoInitials, ...values } as ITodo
           });
         }
-
-        queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODO);
-        queryClient.refetchQueries(APP_KEYS.QUERY_KEYS.TODOS);
       } catch (error) {
         if (error instanceof Error) setErrorMsg(error.message);
       } finally {

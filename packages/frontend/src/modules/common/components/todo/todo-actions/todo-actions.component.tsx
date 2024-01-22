@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { Link } from 'react-router-dom';
-import todoService from '../../../../service/todo.service';
+import { useTodo } from '../../../../hooks/useTodo';
 import { APP_KEYS } from '../../../consts';
 import { ITodo } from '../../../types/todo.types';
 import {
@@ -18,45 +17,25 @@ type TodoActionsProps = {
 };
 
 export const TodoActions = ({ todo }: TodoActionsProps) => {
+  const { deleteTodo, updateTodo } = useTodo(String(todo.id));
+
   const [checkbox, setCheckbox] = useState<boolean>(todo.isCompleted);
 
-  const queryClient = useQueryClient();
-
-  const deleteTodo = useMutation((id: number) => todoService.deleteTodo(String(id)));
-
-  const updateTodoStatus = useMutation((id: number) =>
-    todoService.updateTodo(String(id), {
-      ...todo,
-      isCompleted: checkbox
-    })
-  );
+  const deleteTodoHandler = () => {
+    deleteTodo(todo.id);
+  };
 
   const checkboxOnChange = async () => {
-    await setCheckbox((prev: boolean) => !prev);
-    await updateTodoStatus.mutate(todo.id, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODOS);
-      }
-    });
+    const updatedCheckbox = !checkbox;
+    setCheckbox((prev: boolean) => !prev);
+    updateTodo({ id: todo?.id, data: { ...todo, isCompleted: updatedCheckbox } as ITodo });
   };
   return (
     <ActionsContainer>
       <Link to={APP_KEYS.BACKEND_KEYS.TODO(String(todo.id))}>
         <ViewButton>View</ViewButton>
       </Link>
-      <DeleteButton
-        onClick={
-          () =>
-            deleteTodo.mutate(todo.id, {
-              onSuccess: () => {
-                queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODOS);
-              }
-            })
-          // eslint-disable-next-line react/jsx-curly-newline
-        }
-      >
-        Delete
-      </DeleteButton>
+      <DeleteButton onClick={deleteTodoHandler}>Delete</DeleteButton>
       <Label size="sm">
         <Input
           id="input"

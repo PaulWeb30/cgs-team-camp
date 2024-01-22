@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { APP_KEYS } from '../../../consts';
 import { ITodo } from '../../../types/todo.types';
 import { TodoActions } from '../todo-actions/todo-actions.component';
 
@@ -12,7 +13,7 @@ type ITodoCardProps = {
 export const TodoCard = ({ todo }: ITodoCardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isMainPage = location.pathname === '/';
+  const isMainPage = location.pathname === APP_KEYS.ROUTER_KEYS.ROOT;
   return (
     <Card>
       <Title>{todo?.title}</Title>
