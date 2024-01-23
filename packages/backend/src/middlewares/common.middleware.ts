@@ -1,7 +1,11 @@
 import { ObjectSchema } from 'joi';
 import { Response, Request, NextFunction } from 'express';
-import { EntityTarget, Repository, FindOptionsWhere } from 'typeorm';
+import { EntityTarget, Repository, FindOptionsWhere, BaseEntity } from 'typeorm';
 import { AppDataSource } from '../config/database';
+import { User } from '../entities/User.entity';
+import TodoService from '../services/todo.service';
+
+const todoService = new TodoService();
 
 export const checkIsBodyValid =
   (validatorType: ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
@@ -25,10 +29,16 @@ type EntityType = {
 };
 
 export const isExist =
-  <T extends EntityType>(entityClass: EntityTarget<T>) =>
+  <T extends EntityType>(
+    entityClass: EntityTarget<T>,
+    from: string = 'params',
+    fieldName: string = 'id',
+    dbField = fieldName
+  ) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
+      const fieldToSearch = req[from][fieldName];
 
       const repository: Repository<T> = AppDataSource.getRepository(entityClass);
 
@@ -40,8 +50,30 @@ export const isExist =
         return res.status(404).json({ message: 'Entity not found' });
       }
 
+      req.entity = entity;
+
       next();
     } catch (e) {
       next(e);
     }
   };
+
+export const isAuthor = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user;
+    const { id: todoId } = req.params;
+
+    const todo = await todoService.findOne({ id: todoId });
+
+    const authorId = todo?.author?.id;
+    const isPrivate = todo?.isPrivate;
+
+    if (authorId !== userId && isPrivate) {
+      throw new Error('NO_AUTHOR');
+    }
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};

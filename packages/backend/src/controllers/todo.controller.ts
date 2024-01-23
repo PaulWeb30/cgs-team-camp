@@ -1,4 +1,5 @@
 import { Response, Request } from 'express';
+import { User } from '../entities/User.entity';
 import TodoService from '../services/todo.service';
 
 export class TodoController {
@@ -17,7 +18,9 @@ export class TodoController {
 
   async createTodo(req: Request, res: Response) {
     const { body } = req;
-    const todo = await this.todoService.createTodo(body);
+    const userId = req.user;
+    
+    const todo = await this.todoService.createTodo({ ...body, author: userId });
     res.send(todo);
   }
 
@@ -28,8 +31,10 @@ export class TodoController {
   }
 
   async updateTodo(req: Request, res: Response) {
+    const { id: userId } = req.user as User;
     const { id } = req.params;
-    const todo = await this.todoService.updateTodo(id, req.body);
+
+    const todo = await this.todoService.updateTodo(id, { ...req.body, author: userId });
     res.send(todo);
   }
 }

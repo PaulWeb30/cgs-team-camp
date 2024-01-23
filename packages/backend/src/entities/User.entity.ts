@@ -7,11 +7,14 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
+  @Column({ default: false })
+  isVerified: boolean;
+
   @Column()
-  name: string;
+  passwordHash: string;
 
   @OneToMany(() => Todo, (todo) => todo.author)
   todos: Todo[];
