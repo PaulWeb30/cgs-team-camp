@@ -9,4 +9,5 @@ export interface ITodo {
   isPrivate: boolean;
   status: TodoStatus;
   isCompleted: boolean;
+  authorId: number;
 }

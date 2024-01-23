@@ -12,12 +12,13 @@ export default class TodoService {
   }
 
   async findOne(params: object) {
-    const todo = await Todo.findOneBy(params);
+    const todo = await Todo.findOne({ where: params, relations: ['author'] });
+
     return todo;
   }
 
   async createTodo(todo: ITodo) {
-    const newTodo = Todo.create(todo);
+    const newTodo = await Todo.create(todo);
     await newTodo.save();
     return newTodo;
   }

@@ -6,6 +6,7 @@ import 'dotenv/config';
 import AppRouter from './routes';
 import connectDB from './config/database';
 
+import passportConfig from './config/passport';
 import { errorHandler } from './utils/errorHandler';
 import { corsConfig } from './config/cors';
 
@@ -20,9 +21,11 @@ app.set('port', process.env.PORT || 4200);
 app.use(cors(corsConfig));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(errorHandler);
+app.use(passportConfig.initialize());
 
 router.init();
+
+app.use(errorHandler);
 
 const port = app.get('port');
 // eslint-disable-next-line no-console
