@@ -1,7 +1,6 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import cors from 'cors';
-import passport from 'passport';
 import 'dotenv/config';
 
 import AppRouter from './routes';

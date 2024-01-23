@@ -1,9 +1,7 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import passport from 'passport';
 import { isActionTokenValid } from '../../middlewares/auth.middleware';
 import userController from '../../controllers/user.controller';
-import { User } from '../../entities/User.entity';
-import { isExist } from '../../middlewares/common.middleware';
 
 const userRouter: Router = Router();
 
@@ -21,9 +19,15 @@ userRouter.get(
   userController.verifyEmail.bind(userController)
 );
 
-userRouter.patch(
+userRouter.post(
   '/changePassword',
   passport.authenticate('jwt', { session: false }),
+  userController.requestChangePassword.bind(userController)
+);
+
+userRouter.patch(
+  '/changePassword',
+  isActionTokenValid,
   userController.changePassword.bind(userController)
 );
 

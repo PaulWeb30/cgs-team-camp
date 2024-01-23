@@ -1,10 +1,5 @@
 import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
 import { ExtractJwt, Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
-import { User } from '../entities/User.entity';
-import UserService from '../services/user.service';
-
-const userService = new UserService();
 
 const opts: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

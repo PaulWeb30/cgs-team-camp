@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import passport from 'passport';
 import todoController from '../../controllers/todo.controller';
 
 import { todoValidationSchema } from '../../validation/schemas';
@@ -7,7 +8,6 @@ import { checkIsBodyValid, isExist, isAuthor } from '../../middlewares/common.mi
 import { checkEmailIsVerified } from '../../middlewares/auth.middleware';
 
 import { Todo } from '../../entities/Todo.entity';
-import passport from 'passport';
 
 const todosRouter: Router = Router();
 

@@ -19,7 +19,7 @@ export class TodoController {
   async createTodo(req: Request, res: Response) {
     const { body } = req;
     const userId = req.user;
-    
+
     const todo = await this.todoService.createTodo({ ...body, author: userId });
     res.send(todo);
   }

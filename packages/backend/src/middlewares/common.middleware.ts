@@ -1,8 +1,8 @@
 import { ObjectSchema } from 'joi';
 import { Response, Request, NextFunction } from 'express';
-import { EntityTarget, Repository, FindOptionsWhere, BaseEntity } from 'typeorm';
+import { EntityTarget, Repository, FindOptionsWhere } from 'typeorm';
 import { AppDataSource } from '../config/database';
-import { User } from '../entities/User.entity';
+
 import TodoService from '../services/todo.service';
 
 const todoService = new TodoService();
@@ -31,14 +31,10 @@ type EntityType = {
 export const isExist =
   <T extends EntityType>(
     entityClass: EntityTarget<T>,
-    from: string = 'params',
-    fieldName: string = 'id',
-    dbField = fieldName
   ) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const fieldToSearch = req[from][fieldName];
 
       const repository: Repository<T> = AppDataSource.getRepository(entityClass);
 

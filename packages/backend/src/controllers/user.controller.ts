@@ -61,6 +61,23 @@ export class UserController {
     }
   }
 
+  async requestChangePassword(req: Request, res: Response) {
+    const userId = req.user as string;
+
+    const user = await this.userService.findOne({ id: userId });
+
+    if (!user) {
+      throw new Error('No user found');
+    }
+
+    const activationToken = await this.userService.generateToken({ email: user.email });
+
+    const activationLink = `${process.env.CLIENT_URL}/changePassword/${activationToken}`;
+    await sendEmail(user.email, activationLink);
+
+    res.status(201).json({ message: 'REQUEST_CHANGE_PASSWORD_SUCCESSFUL' });
+  }
+
   async changePassword(req: Request, res: Response) {
     const userId = req.user as string;
     const { password } = req.body;
