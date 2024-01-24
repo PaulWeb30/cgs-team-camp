@@ -2,6 +2,9 @@ export enum TodoStatus {
   COMPLETED = 'completed',
   PENDING = 'pending'
 }
+type TodoAuthor = {
+  id: number;
+};
 
 export interface ITodo {
   id: number;
@@ -10,4 +13,5 @@ export interface ITodo {
   isPrivate: boolean;
   status: TodoStatus;
   isCompleted: boolean;
+  author?: TodoAuthor;
 }

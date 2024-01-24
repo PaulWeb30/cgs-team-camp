@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { Link } from 'react-router-dom';
 import { Container, ProfileButton } from './todo-container.styled';
 import { TodosTable } from '../todo-table/todo-table.component';
 import { TodoHeader } from '../todo-header';
@@ -9,6 +10,7 @@ import { TodoCard } from '../todo-card';
 import { TodoSlider } from '../todo-slider';
 import { TodoModal } from '../todo-modal';
 import { useTodos } from '../../../../hooks/useTodos';
+import { APP_KEYS } from '../../../consts';
 
 export const TodosContainer = () => {
   const { todos, isLoading, isError } = useTodos();
@@ -34,7 +36,9 @@ export const TodosContainer = () => {
   return (
     <Container>
       {isModalOpen && <TodoModal onClose={changeModalState} isCreateMode />}
-      <ProfileButton>My profile</ProfileButton>
+      <Link to={APP_KEYS.ROUTER_KEYS.PROFILE}>
+        <ProfileButton>My profile</ProfileButton>
+      </Link>
       <ProfileButton onClick={() => changeModalState(true)}>Create todo</ProfileButton>
       {isDesktop && (
         <>

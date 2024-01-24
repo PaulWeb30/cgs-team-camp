@@ -29,9 +29,7 @@ type EntityType = {
 };
 
 export const isExist =
-  <T extends EntityType>(
-    entityClass: EntityTarget<T>,
-  ) =>
+  <T extends EntityType>(entityClass: EntityTarget<T>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

@@ -5,10 +5,12 @@ import { Button, TodoCard } from '../../common/components/todo/todo-card';
 import { TodoModal } from '../../common/components/todo/todo-modal';
 import { ITodo } from '../../common/types/todo.types';
 import { useTodo } from '../../hooks/useTodo';
+import { useTodoActions } from '../../hooks/useTodoActions';
 
 export const TodoPage = () => {
   const { id } = useParams();
-  const { todo, isLoading, isError, updateTodo } = useTodo(id as string);
+  const { todo, isLoading, isError } = useTodo(id as string);
+  const { updateTodo } = useTodoActions();
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [checkbox, setCheckbox] = useState<boolean>(false);

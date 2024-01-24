@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { APP_KEYS } from '../common/consts';
 
 export class HttpService {
   private baseUrl: string;
@@ -23,7 +24,7 @@ export class HttpService {
 
   private populateTokenToHeaderConfig(): Record<string, string | null> {
     return {
-      Authorization: localStorage.getItem('token')
+      Authorization: `Bearer ${localStorage.getItem(APP_KEYS.STORAGE_KEYS.TOKEN)}`
     };
   }
 
@@ -53,6 +54,22 @@ export class HttpService {
     }
     return this.fetchingService
       .put(
+        this.getFullApiUrl(config.url as string),
+        config.data,
+        this.extractUrlAndDataFromConfig(config)
+      )
+      .then((res) => res.data);
+  }
+
+  patch(config: AxiosRequestConfig, withAuth: boolean = true): Promise<any> {
+    if (withAuth) {
+      config.headers = {
+        ...config.headers,
+        ...this.populateTokenToHeaderConfig()
+      };
+    }
+    return this.fetchingService
+      .patch(
         this.getFullApiUrl(config.url as string),
         config.data,
         this.extractUrlAndDataFromConfig(config)
