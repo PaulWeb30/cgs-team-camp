@@ -1,5 +1,4 @@
 import { Response, Request } from 'express';
-import { generateDbQuery } from '../utils/generateDbQuery';
 import { User } from '../entities/User.entity';
 import TodoService from '../services/todo.service';
 
@@ -10,8 +9,7 @@ export class TodoController {
     const userId = req.user as string;
     const { query } = req;
 
-    const dbQuery = generateDbQuery(userId, query);
-    const todos = await this.todoService.findAll(dbQuery);
+    const todos = await this.todoService.findAll(userId, query);
     res.send(todos);
   }
 

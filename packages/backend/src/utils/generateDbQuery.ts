@@ -1,36 +1,42 @@
-import { Like } from 'typeorm';
-import { User } from '../entities/User.entity';
-import { IQueryFilters, ITodoFilters, TodoStatus } from '../types/todos.type';
+import { Todo } from '../entities/Todo.entity';
+import { IQueryFilters, TodoStatus } from '../types/todos.type';
 
-export const generateDbQuery = (userId: string, query: IQueryFilters): ITodoFilters => {
-  let dbQuery: ITodoFilters = {};
+export const generateDbQuery = async (userId: string, query: IQueryFilters): Promise<Todo[]> => {
+  const qb = Todo.createQueryBuilder('todo');
 
-  switch (query.status) {
-    case TodoStatus.COMPLETED:
-      dbQuery = {};
-      dbQuery.author = { id: userId } as User;
-      dbQuery.isCompleted = true;
-      break;
-    case TodoStatus.PRIVATE:
-      dbQuery = {};
-      dbQuery.author = { id: userId } as User;
-      dbQuery.isPrivate = true;
-      break;
-    case TodoStatus.PUBLIC:
-      dbQuery = {};
-      dbQuery.author = { id: userId } as User;
-      dbQuery.isPrivate = false;
-      break;
-    case TodoStatus.ALL:
-      dbQuery = {};
-      break;
-    default:
-      break;
+  const statusHandlers = {
+    [TodoStatus.ALL]: () => {},
+    [TodoStatus.COMPLETED]: () => {
+      qb.andWhere('todo.isCompleted = :isCompleted', { isCompleted: true });
+      qb.andWhere('todo.author = :userId', { userId });
+    },
+    [TodoStatus.PRIVATE]: () => {
+      qb.andWhere('todo.isPrivate = :isPrivate', { isPrivate: true });
+      qb.andWhere('todo.author = :userId', { userId });
+    },
+    [TodoStatus.PUBLIC]: () => {
+      qb.andWhere('todo.isPrivate = :isPrivate', { isPrivate: false });
+      qb.andWhere('todo.author = :userId', { userId });
+    }
+  };
+
+  if (query.status !== TodoStatus.ALL) {
+    qb.andWhere('todo.author = :userId', { userId });
   }
+
+  const statusHandler = query?.status
+    ? statusHandlers[query.status]
+    : statusHandlers[TodoStatus.ALL];
+  statusHandler();
 
   if (query.search) {
-    dbQuery.title = Like(`%${query.search}%`);
+    qb.andWhere('todo.title LIKE :search', { search: `%${query.search}%` }).orWhere(
+      'todo.description LIKE :search',
+      { search: `%${query.search}%` }
+    );
   }
 
-  return dbQuery;
+  qb.orderBy('todo.id', 'ASC');
+
+  return qb.getMany();
 };

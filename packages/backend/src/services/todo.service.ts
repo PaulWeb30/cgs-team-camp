@@ -1,14 +1,10 @@
+import { generateDbQuery } from '../utils/generateDbQuery';
 import { Todo } from '../entities/Todo.entity';
-import { ITodo, ITodoFilters } from '../types/todos.type';
+import { IQueryFilters, ITodo } from '../types/todos.type';
 
 export default class TodoService {
-  async findAll(query: ITodoFilters) {
-    const todos = await Todo.find({
-      where: query,
-      order: {
-        id: 'ASC'
-      }
-    });
+  async findAll(userId: string, query: IQueryFilters) {
+    const todos = await generateDbQuery(userId, query);
     return todos;
   }
 
