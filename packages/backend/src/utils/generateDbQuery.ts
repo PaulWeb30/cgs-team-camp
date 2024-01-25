@@ -8,15 +8,12 @@ export const generateDbQuery = async (userId: string, query: IQueryFilters): Pro
     [TodoStatus.ALL]: () => {},
     [TodoStatus.COMPLETED]: () => {
       qb.andWhere('todo.isCompleted = :isCompleted', { isCompleted: true });
-      qb.andWhere('todo.author = :userId', { userId });
     },
     [TodoStatus.PRIVATE]: () => {
       qb.andWhere('todo.isPrivate = :isPrivate', { isPrivate: true });
-      qb.andWhere('todo.author = :userId', { userId });
     },
     [TodoStatus.PUBLIC]: () => {
       qb.andWhere('todo.isPrivate = :isPrivate', { isPrivate: false });
-      qb.andWhere('todo.author = :userId', { userId });
     }
   };
 
