@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTodo } from '../../../../hooks/useTodo';
+import { useTodoActions } from '../../../../hooks/useTodoActions';
 import { APP_KEYS } from '../../../consts';
 import { ITodo } from '../../../types/todo.types';
 import {
@@ -17,7 +17,7 @@ type TodoActionsProps = {
 };
 
 export const TodoActions = ({ todo }: TodoActionsProps) => {
-  const { deleteTodo, updateTodo } = useTodo(String(todo.id));
+  const { deleteTodo, updateTodo } = useTodoActions();
 
   const [checkbox, setCheckbox] = useState<boolean>(todo.isCompleted);
 

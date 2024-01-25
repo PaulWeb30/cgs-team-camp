@@ -16,7 +16,7 @@ import {
 } from './todo-modal.styled';
 
 import { ITodo } from '../../../types/todo.types';
-import { useTodo } from '../../../../hooks/useTodo';
+import { useTodoActions } from '../../../../hooks/useTodoActions';
 
 type TodoModalProps = {
   onClose: (state: boolean) => void;
@@ -25,7 +25,7 @@ type TodoModalProps = {
 };
 
 export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProps) => {
-  const { updateTodo, createTodo } = useTodo(String(todoInitials?.id));
+  const { updateTodo, createTodo } = useTodoActions();
 
   const [errorMsg, setErrorMsg] = useState<string>('');
 

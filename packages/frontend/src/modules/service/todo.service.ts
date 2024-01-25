@@ -3,7 +3,6 @@ import { HttpService } from './http.service';
 import { APP_KEYS } from '../common/consts';
 
 class TodoService extends HttpService {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor() {
     super();
   }

@@ -53,7 +53,7 @@ export const InputField = styled.input`
 `;
 
 export const ErrorMessage = styled.p`
-  color: red;
+  color: ${COLORS.red};
   font-size: 0.8rem;
   margin-bottom: 10px;
 `;

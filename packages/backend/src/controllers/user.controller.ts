@@ -50,7 +50,7 @@ export class UserController {
       const isValidPass = await this.userService.comparePasswords(body.password, user.passwordHash);
 
       if (!isValidPass) {
-        throw new Error('No password same');
+        throw new Error('Password is wrong');
       }
 
       const token = await this.userService.generateToken({ id: user.id });
@@ -61,51 +61,90 @@ export class UserController {
     }
   }
 
-  async requestChangePassword(req: Request, res: Response) {
-    const userId = req.user as string;
+  async requestForgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
 
-    const user = await this.userService.findOne({ id: userId });
+      const user = await this.userService.findOne({ email });
 
-    if (!user) {
-      throw new Error('No user found');
+      if (!user) {
+        throw new Error('No user found');
+      }
+
+      const activationToken = await this.userService.generateToken({ email: user.email });
+
+      const activationLink = `${process.env.CLIENT_URL}/auth/forgotPassword/${activationToken}`;
+      await sendEmail(user.email, activationLink);
+
+      res.status(200).json({ message: 'REQUEST_FORGOT_PASSWORD_SUCCESSFUL' });
+    } catch (e) {
+      next(e);
     }
-
-    const activationToken = await this.userService.generateToken({ email: user.email });
-
-    const activationLink = `${process.env.CLIENT_URL}/changePassword/${activationToken}`;
-    await sendEmail(user.email, activationLink);
-
-    res.status(201).json({ message: 'REQUEST_CHANGE_PASSWORD_SUCCESSFUL' });
   }
 
-  async changePassword(req: Request, res: Response) {
-    const userId = req.user as string;
-    const { password } = req.body;
+  async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req;
+      const { password } = req.body;
 
-    const user = await this.userService.findOne({ id: userId });
+      const user = await this.userService.findOne({ email });
 
-    if (!user) {
-      throw new Error('No user found');
+      if (!user) {
+        throw new Error('No user found');
+      }
+
+      const passwordHash = await this.userService.hashPassword(password);
+
+      await this.userService.updateUser(user.id, { ...user, passwordHash });
+
+      res.status(200).json({ message: 'FORGOT_PASSWORD_SUCCESSFUL' });
+    } catch (e) {
+      next(e);
     }
-
-    const passwordHash = await this.userService.hashPassword(password);
-
-    await this.userService.updateUser(userId, { ...user, passwordHash });
-
-    res.status(201).json({ message: 'CHANGE_PASSWORD_SUCCESSFUL' });
   }
 
-  async verifyEmail(req: Request, res: Response) {
-    const { email } = req;
-    const user = await this.userService.findOne({ email });
+  async changePassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user as string;
+      const { password, oldPassword } = req.body;
 
-    if (!user) {
-      throw new Error('USER_NOT_FOUND');
+      const user = await this.userService.findOne({ id: userId });
+
+      if (!user) {
+        throw new Error('No user found');
+      }
+
+      const isValidPass = await this.userService.comparePasswords(oldPassword, user.passwordHash);
+
+      if (!isValidPass) {
+        throw new Error('Your current password is wrong');
+      }
+
+      const passwordHash = await this.userService.hashPassword(password);
+
+      await this.userService.updateUser(userId, { ...user, passwordHash });
+
+      res.status(200).json({ message: 'CHANGE_PASSWORD_SUCCESSFUL' });
+    } catch (e) {
+      next(e);
     }
+  }
 
-    await this.userService.updateUser(user?.id!, { ...user, isVerified: true });
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req;
+      const user = await this.userService.findOne({ email });
 
-    res.status(201).json({ message: 'VERIFIED_SUCCESSFUL' });
+      if (!user) {
+        throw new Error('USER_NOT_FOUND');
+      }
+
+      await this.userService.updateUser(user?.id!, { ...user, isVerified: true });
+
+      res.status(200).json({ message: 'VERIFIED_SUCCESSFUL' });
+    } catch (e) {
+      next(e);
+    }
   }
 }
 

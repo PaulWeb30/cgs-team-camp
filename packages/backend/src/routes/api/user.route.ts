@@ -20,14 +20,19 @@ userRouter.get(
 );
 
 userRouter.post(
-  '/changePassword',
-  passport.authenticate('jwt', { session: false }),
-  userController.requestChangePassword.bind(userController)
+  '/requestForgotPassword',
+  userController.requestForgotPassword.bind(userController)
+);
+
+userRouter.patch(
+  '/forgotPassword/:token',
+  isActionTokenValid,
+  userController.forgotPassword.bind(userController)
 );
 
 userRouter.patch(
   '/changePassword',
-  isActionTokenValid,
+  passport.authenticate('jwt', { session: false }),
   userController.changePassword.bind(userController)
 );
 
