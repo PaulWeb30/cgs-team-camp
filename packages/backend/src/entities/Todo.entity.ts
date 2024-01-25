@@ -1,6 +1,5 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { TodoStatus } from '../types/todos.type';
-// eslint-disable-next-line import/no-cycle
+
 import { User } from './User.entity';
 
 @Entity('todos')
@@ -20,17 +19,10 @@ export class Todo extends BaseEntity {
   isPrivate: boolean;
 
   @Column({
-    type: 'enum',
-    enum: TodoStatus,
-    default: TodoStatus.PENDING
-  })
-  status: string;
-
-  @Column({
     default: false
   })
   isCompleted: boolean;
 
-  @ManyToOne(() => User, (user) => user.todos)
-  author: User;
+  @ManyToOne(() => User, { onDelete: 'CASCADE' })
+  author?: User;
 }

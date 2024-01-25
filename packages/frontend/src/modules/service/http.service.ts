@@ -93,15 +93,19 @@ export class HttpService {
       .then((res) => res.data);
   }
 
-  delete(config: AxiosRequestConfig, withAuth: boolean = true) {
+  async delete(config: AxiosRequestConfig, withAuth = true) {
     if (withAuth) {
       config.headers = {
         ...config.headers,
         ...this.populateTokenToHeaderConfig()
       };
     }
+
     return this.fetchingService
-      .delete(this.getFullApiUrl(config.url as string), config.data)
+      .delete(this.getFullApiUrl(config.url as string), {
+        ...config,
+        ...this.extractUrlAndDataFromConfig(config)
+      })
       .then((res) => res.data);
   }
 }

@@ -1,12 +1,17 @@
 import { Response, Request } from 'express';
+import { generateDbQuery } from '../utils/generateDbQuery';
 import { User } from '../entities/User.entity';
 import TodoService from '../services/todo.service';
 
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  async getAllTodo(_: Request, res: Response) {
-    const todos = await this.todoService.findAll();
+  async getAllTodo(req: Request, res: Response) {
+    const userId = req.user as string;
+    const { query } = req;
+
+    const dbQuery = generateDbQuery(userId, query);
+    const todos = await this.todoService.findAll(dbQuery);
     res.send(todos);
   }
 

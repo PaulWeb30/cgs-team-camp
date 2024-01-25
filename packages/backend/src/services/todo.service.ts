@@ -1,9 +1,10 @@
 import { Todo } from '../entities/Todo.entity';
-import { ITodo } from '../types/todos.type';
+import { ITodo, ITodoFilters } from '../types/todos.type';
 
 export default class TodoService {
-  async findAll() {
+  async findAll(query: ITodoFilters) {
     const todos = await Todo.find({
+      where: query,
       order: {
         id: 'ASC'
       }
