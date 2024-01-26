@@ -60,9 +60,8 @@ export const isAuthor = async (req: Request, res: Response, next: NextFunction) 
     const todo = await todoService.findOne({ id: todoId });
 
     const authorId = todo?.author?.id;
-    const isPrivate = todo?.isPrivate;
 
-    if (authorId !== userId && isPrivate) {
+    if (authorId !== userId) {
       throw new Error('NO_AUTHOR');
     }
 

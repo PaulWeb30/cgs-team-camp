@@ -3,17 +3,15 @@ import { HttpService } from './http.service';
 import { APP_KEYS } from '../common/consts';
 
 class TodoService extends HttpService {
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor() {
     super();
   }
 
-  getTodos(): Promise<ITodo[]> {
-    return this.get(
-      {
-        url: APP_KEYS.BACKEND_KEYS.ROOT
-      },
-      false
-    );
+  getTodos(search: string | null, status: string): Promise<ITodo[]> {
+    return this.get({
+      url: APP_KEYS.BACKEND_KEYS.ROOT(search, status)
+    });
   }
 
   getTodo(id: string): Promise<ITodo> {
@@ -36,8 +34,9 @@ class TodoService extends HttpService {
     });
   }
 
-  deleteTodo(id: string): Promise<string> {
+  deleteTodo(id: string) {
     return this.delete({
+      method: 'delete',
       url: APP_KEYS.BACKEND_KEYS.DELETE(id)
     });
   }

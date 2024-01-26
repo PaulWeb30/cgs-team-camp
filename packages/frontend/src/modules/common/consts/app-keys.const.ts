@@ -17,7 +17,8 @@ export const QUERY_KEYS = {
 
 // Backend Routes
 export const BACKEND_KEYS = {
-  ROOT: 'todos',
+  ROOT: (search: string | null, status: string) =>
+    `todos?status=${status}${search ? `&search=${search}` : ''}`,
   CREATE: 'todos/create',
   TODO: (todoId?: string) => `todos/${todoId}`,
   UPDATE: (todoId?: string) => `todos/update/${todoId}`,

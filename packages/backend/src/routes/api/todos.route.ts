@@ -11,7 +11,11 @@ import { Todo } from '../../entities/Todo.entity';
 
 const todosRouter: Router = Router();
 
-todosRouter.get('', todoController.getAllTodo.bind(todoController));
+todosRouter.get(
+  '',
+  passport.authenticate('jwt', { session: false }),
+  todoController.getAllTodo.bind(todoController)
+);
 
 todosRouter.get(
   '/:id',
@@ -37,6 +41,12 @@ todosRouter.put(
   todoController.updateTodo.bind(todoController)
 );
 
-todosRouter.delete('/:id', isExist(Todo), isAuthor, todoController.deleteTodo.bind(todoController));
+todosRouter.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  isExist(Todo),
+  isAuthor,
+  todoController.deleteTodo.bind(todoController)
+);
 
 export default todosRouter;

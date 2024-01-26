@@ -1,13 +1,29 @@
+import { FindOperator } from 'typeorm';
+import { User } from '../entities/User.entity';
+
 export enum TodoStatus {
   COMPLETED = 'completed',
-  PENDING = 'pending'
+  ALL = 'all',
+  PRIVATE = 'private',
+  PUBLIC = 'public'
 }
 
 export interface ITodo {
   title: string;
   description: string;
   isPrivate: boolean;
-  status: TodoStatus;
   isCompleted: boolean;
   authorId: number;
+}
+
+export interface ITodoFilters {
+  isCompleted?: boolean;
+  isPrivate?: boolean;
+  title?: FindOperator<string>;
+  author?: User;
+}
+
+export interface IQueryFilters {
+  search?: string;
+  status?: TodoStatus;
 }

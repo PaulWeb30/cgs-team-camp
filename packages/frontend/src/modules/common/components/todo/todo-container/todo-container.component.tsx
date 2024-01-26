@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { Container, ProfileButton } from './todo-container.styled';
 import { TodosTable } from '../todo-table/todo-table.component';
 import { TodoHeader } from '../todo-header';
-import { TodoSearch } from '../todo-search';
-import { TodoFilters } from '../todo-filters';
 import { TodoCard } from '../todo-card';
 import { TodoSlider } from '../todo-slider';
 import { TodoModal } from '../todo-modal';
@@ -54,8 +52,7 @@ export const TodosContainer = () => {
       )}
       {isMobile && (
         <>
-          <TodoSearch />
-          <TodoFilters />
+          <TodoHeader />
           {todos?.map((todo) => (
             <TodoCard key={todo.id} todo={todo} />
           ))}

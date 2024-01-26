@@ -119,6 +119,8 @@ rules:
   '@typescript-eslint/semi': 'error'
   # Need it to stop if SERVICE is not passed
   '@typescript-eslint/no-throw-literal': 'off'
+  # Note: you must disable the base rule as it can report incorrect errors
+  '@typescript-eslint/no-shadow': 'error'
 
 # ⭐ Overrides
 overrides:
