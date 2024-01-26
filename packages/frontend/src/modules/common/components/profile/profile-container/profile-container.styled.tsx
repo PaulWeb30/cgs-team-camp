@@ -1,7 +1,10 @@
 import styled from 'styled-components';
-import { DEVICE, SPACES } from '../../../../theme';
+import { DEVICE, SPACES, COLORS } from '../../../../theme';
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: ${SPACES.sm};
   @media ${DEVICE.tablet} {
     padding: ${SPACES.lg} ${SPACES.md};
@@ -16,7 +19,18 @@ export const LogoutButton = styled.button`
   height: 50px;
   background-color: transparent;
   color: black;
-  margin-bottom: ${SPACES.md};
+  margin: ${SPACES.md} 0px;
   display: block;
   cursor: pointer;
+  transition: 0.4s linear background-color;
+  &:hover {
+    transition: 0.4s linear background-color;
+    background-color: ${COLORS.blue};
+    color: ${COLORS.white};
+  }
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  gap: ${SPACES.md};
 `;

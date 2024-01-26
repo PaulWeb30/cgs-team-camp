@@ -1,7 +1,15 @@
 import { Todo } from '../entities/Todo.entity';
-import { IQueryFilters, TodoStatus } from '../types/todos.type';
+import { IQueryFilters, TodoStatus, TodoQueryResult } from '../types/todos.type';
 
-export const generateDbQuery = async (userId: string, query: IQueryFilters): Promise<Todo[]> => {
+export const generateDbQuery = async (
+  userId: string,
+  query: IQueryFilters
+): Promise<TodoQueryResult> => {
+  const { page, pageSize } = query;
+
+  const pageNumeric = Number(page);
+  const pageSizeNumeric = Number(pageSize);
+
   const qb = Todo.createQueryBuilder('todo');
 
   const statusHandlers = {
@@ -35,5 +43,14 @@ export const generateDbQuery = async (userId: string, query: IQueryFilters): Pro
 
   qb.orderBy('todo.id', 'ASC');
 
-  return qb.getMany();
+  const skip = (pageNumeric - 1) * pageSizeNumeric;
+
+  qb.skip(skip).take(pageSizeNumeric);
+
+  const totalCount = await qb.getCount();
+  const totalPages = Math.ceil(totalCount / pageSizeNumeric);
+
+  const todos = await qb.getMany();
+
+  return { totalCount, page: pageNumeric, pageSize: pageSizeNumeric, todos, totalPages };
 };

@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import { ForgotPasswordSchema } from '../../../validations/schemas';
-import { Container } from './auth-forgot.styled';
+import { Container } from '../../profile/profile-container';
 import {
-  FormContainer,
+  FormSecond,
   SubmitButton,
   InputField,
   ErrorDisplay,
@@ -40,7 +40,7 @@ export const AuthForgot = () => {
   });
   return (
     <Container>
-      <FormContainer onSubmit={formik.handleSubmit}>
+      <FormSecond onSubmit={formik.handleSubmit}>
         <InputField
           type="password"
           name="password"
@@ -65,9 +65,9 @@ export const AuthForgot = () => {
             formik.touched.confirmPassword &&
             formik.errors.confirmPassword}
         </ErrorMessage>
-        <SubmitButton type="submit">Change password</SubmitButton>
+        <SubmitButton type="submit">Reset password</SubmitButton>
         <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
-      </FormContainer>
+      </FormSecond>
     </Container>
   );
 };

@@ -25,8 +25,10 @@ export const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
+  margin-top: ${SPACES.md};
+  transition: 0.3s ease-in opacity;
   &:hover {
-    opacity: 0.5;
+    transition: 0.3s ease-out opacity;
+    opacity: 0.8;
   }
 `;

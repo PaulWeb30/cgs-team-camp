@@ -3,16 +3,17 @@ import { Link, useLocation } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useFormik } from 'formik';
 import { LoginSchema } from '../../../validations/schemas';
-import { Container } from './auth-login.styled';
+import { Container } from '../../profile/profile-container';
 import {
-  FormContainer,
   SubmitButton,
   InputField,
   ErrorDisplay,
-  ErrorMessage
+  ErrorMessage,
+  FormSecond
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
 import { APP_KEYS } from '../../../consts';
+import { GoBack } from '../../todo/goBack/goBack.component';
 
 export const AuthLogin = () => {
   const location = useLocation();
@@ -41,7 +42,7 @@ export const AuthLogin = () => {
   });
   return (
     <Container>
-      <FormContainer onSubmit={formik.handleSubmit}>
+      <FormSecond onSubmit={formik.handleSubmit}>
         <InputField
           type="email"
           name="email"
@@ -66,8 +67,9 @@ export const AuthLogin = () => {
         </ErrorMessage>
         <SubmitButton type="submit">{formik.isSubmitting ? 'Submitting...' : 'Login'}</SubmitButton>
         <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
-        <Link to={APP_KEYS.ROUTER_KEYS.SIGNUP}>Dont have an account? Create.</Link>
-      </FormContainer>
+        <Link to={APP_KEYS.ROUTER_KEYS.SIGNUP}>Dont have an account? Create</Link>
+        <GoBack />
+      </FormSecond>
     </Container>
   );
 };
