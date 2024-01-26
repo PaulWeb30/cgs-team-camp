@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { GoBack } from '../../common/components/todo/goBack/goBack.component';
 import { Input, Label, Slider } from '../../common/components/todo/todo-actions';
 import { Button, TodoCard } from '../../common/components/todo/todo-card';
 import { TodoModal } from '../../common/components/todo/todo-modal';
@@ -43,6 +44,7 @@ export const TodoPage = () => {
         <TodoModal onClose={changeModalState} isCreateMode={false} todoInitials={todo} />
       )}
       <TodoCard todo={todo as ITodo} />
+
       <Button onClick={() => changeModalState(true)}>Edit todo</Button>
       <div
         style={{
@@ -65,6 +67,7 @@ export const TodoPage = () => {
           <Slider />
         </Label>
       </div>
+      <GoBack />
     </>
   );
 };

@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { ChangePasswordSchema } from '../../../validations/schemas';
 
 import {
-  FormContainer,
+  FormSecond,
   SubmitButton,
   InputField,
   ErrorDisplay,
@@ -34,7 +34,7 @@ export const ProfileChangePassword = () => {
     validationSchema: ChangePasswordSchema
   });
   return (
-    <FormContainer onSubmit={formik.handleSubmit}>
+    <FormSecond onSubmit={formik.handleSubmit}>
       <InputField
         type="password"
         name="oldPassword"
@@ -72,6 +72,6 @@ export const ProfileChangePassword = () => {
       </ErrorMessage>
       <SubmitButton type="submit">Change</SubmitButton>
       <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
-    </FormContainer>
+    </FormSecond>
   );
 };

@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import { Container, ProfileButton } from './todo-container.styled';
 import { TodosTable } from '../todo-table/todo-table.component';
 import { TodoHeader } from '../todo-header';
-import { TodoCard } from '../todo-card';
 import { TodoSlider } from '../todo-slider';
 import { TodoModal } from '../todo-modal';
 import { useTodos } from '../../../../hooks/useTodos';
 import { APP_KEYS } from '../../../consts';
+import { TodoPhone } from '../todo-phone/todo-phone.component';
 
 export const TodosContainer = () => {
   const { todos, isLoading, isError } = useTodos();
@@ -28,7 +28,7 @@ export const TodosContainer = () => {
   }
 
   if (isError) {
-    return <h1>Error...</h1>;
+    return <h1>Error happened...</h1>;
   }
 
   return (
@@ -38,26 +38,10 @@ export const TodosContainer = () => {
         <ProfileButton>My profile</ProfileButton>
       </Link>
       <ProfileButton onClick={() => changeModalState(true)}>Create todo</ProfileButton>
-      {isDesktop && (
-        <>
-          <TodoHeader />
-          <TodosTable todos={todos} />
-        </>
-      )}
-      {isTablet && (
-        <>
-          <TodoHeader />
-          <TodoSlider todos={todos} />
-        </>
-      )}
-      {isMobile && (
-        <>
-          <TodoHeader />
-          {todos?.map((todo) => (
-            <TodoCard key={todo.id} todo={todo} />
-          ))}
-        </>
-      )}
+      <TodoHeader />
+      {isDesktop && <TodosTable todos={todos} />}
+      {isTablet && <TodoSlider todos={todos} />}
+      {isMobile && <TodoPhone todos={todos} />}
     </Container>
   );
 };

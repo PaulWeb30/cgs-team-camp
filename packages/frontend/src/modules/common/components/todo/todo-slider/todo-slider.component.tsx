@@ -14,26 +14,32 @@ type ITodoSliderProps = {
 };
 
 export const TodoSlider = ({ todos }: ITodoSliderProps) => (
-  <Swiper
-    effect="coverflow"
-    grabCursor
-    centeredSlides
-    slidesPerView="auto"
-    coverflowEffect={{
-      rotate: 50,
-      stretch: 0,
-      depth: 100,
-      modifier: 1,
-      slideShadows: true
-    }}
-    pagination
-    modules={[EffectCoverflow, Pagination]}
-    className="mySwiper"
-  >
-    {todos?.map((todo) => (
-      <SwiperSlide key={todo.id}>
-        <TodoCard todo={todo} />
-      </SwiperSlide>
-    ))}
-  </Swiper>
+  <div>
+    {todos?.length ? (
+      <Swiper
+        effect="coverflow"
+        grabCursor
+        centeredSlides
+        slidesPerView="auto"
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true
+        }}
+        pagination
+        modules={[EffectCoverflow, Pagination]}
+        className="mySwiper"
+      >
+        {todos?.map((todo) => (
+          <SwiperSlide key={todo.id}>
+            <TodoCard todo={todo} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    ) : (
+      <h2>No todos found</h2>
+    )}
+  </div>
 );
