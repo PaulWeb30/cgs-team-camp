@@ -7,7 +7,7 @@ export const RequireAuth = () => {
   const auth = localStorage.getItem(APP_KEYS.STORAGE_KEYS.TOKEN);
 
   if (!auth) {
-    return <Navigate to={APP_KEYS.ROUTER_KEYS.LOGIN} state={{ from: location }} />;
+    return <Navigate to={APP_KEYS.ROUTER_KEYS.AUTH} state={{ from: location }} />;
   }
 
   return <Outlet />;

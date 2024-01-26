@@ -15,26 +15,32 @@ type ITodosTableProps = {
 };
 
 export const TodosTable = ({ todos }: ITodosTableProps) => (
-  <TableContainer>
-    <StyledTable>
-      <TableHeader>
-        <TableRow>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Actions</th>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {todos?.map((todo) => (
-          <TableRow key={todo.id}>
-            <TableCell>{todo.title}</TableCell>
-            <TableCell>{todo.description}</TableCell>
-            <TableCell>
-              <TodoActions todo={todo} />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </StyledTable>
-  </TableContainer>
+  <div>
+    {todos?.length ? (
+      <TableContainer>
+        <StyledTable>
+          <TableHeader>
+            <TableRow>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {todos?.map((todo) => (
+              <TableRow key={todo.id}>
+                <TableCell>{todo.title}</TableCell>
+                <TableCell>{todo.description}</TableCell>
+                <TableCell>
+                  <TodoActions todo={todo} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </StyledTable>
+      </TableContainer>
+    ) : (
+      <h2>No todos found</h2>
+    )}
+  </div>
 );

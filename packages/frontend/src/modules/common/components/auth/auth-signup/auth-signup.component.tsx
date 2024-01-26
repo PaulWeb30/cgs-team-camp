@@ -5,15 +5,16 @@ import { useFormik } from 'formik';
 
 import { APP_KEYS } from '../../../consts';
 import { SignupSchema } from '../../../validations/schemas';
-import { Container } from './auth-signup.styled';
+import { Container } from '../../profile/profile-container';
 import {
-  FormContainer,
+  FormSecond,
   SubmitButton,
   InputField,
   ErrorDisplay,
   ErrorMessage
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
+import { GoBack } from '../../todo/goBack/goBack.component';
 
 export const AuthSignup = () => {
   const location = useLocation();
@@ -41,7 +42,7 @@ export const AuthSignup = () => {
   });
   return (
     <Container>
-      <FormContainer onSubmit={formik.handleSubmit}>
+      <FormSecond onSubmit={formik.handleSubmit}>
         <InputField
           type="email"
           name="email"
@@ -80,7 +81,8 @@ export const AuthSignup = () => {
         <SubmitButton type="submit">Signup</SubmitButton>
         <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
         <Link to={APP_KEYS.ROUTER_KEYS.LOGIN}>Already, have an account?</Link>
-      </FormContainer>
+        <GoBack />
+      </FormSecond>
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS } from '../../../../theme';
+import { COLORS, DEVICE } from '../../../../theme';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -46,6 +46,19 @@ export const FormContainer = styled.form`
   margin-top: 20px;
 `;
 
+export const FormSecond = styled.form`
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  @media ${DEVICE.tablet} {
+    width: 60%;
+  }
+  @media ${DEVICE.mobile} {
+    width: 70%;
+  }
+`;
+
 export const InputField = styled.input`
   margin-bottom: 10px;
   padding: 8px;
@@ -54,7 +67,7 @@ export const InputField = styled.input`
 
 export const ErrorMessage = styled.p`
   color: ${COLORS.red};
-  font-size: 0.8rem;
+  font-size: 1rem;
   margin-bottom: 10px;
 `;
 
@@ -68,5 +81,6 @@ export const SubmitButton = styled.button`
 
 export const ErrorDisplay = styled.p`
   color: ${COLORS.red};
-  font-size: 1rem;
+  font-size: 1.2rem;
+  margin: 10px 0;
 `;

@@ -11,14 +11,16 @@ export const Card = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-size: 1.5em;
+  font-size: 2em;
   color: ${COLORS.black};
   border-bottom: 1px solid ${COLORS.whiter};
   padding-bottom: 10px;
 `;
 
 export const Content = styled.p`
+  margin-top: 10px;
   color: #666;
+  font-size: 1.2em;
 `;
 
 export const Button = styled.button`
