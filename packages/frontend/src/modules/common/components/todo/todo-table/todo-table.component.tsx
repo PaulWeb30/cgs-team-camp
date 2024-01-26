@@ -1,6 +1,7 @@
 import React from 'react';
-import { ITodo } from '../../../types/todo.types';
+import { IGetTodos } from '../../../types/todo.types';
 import { TodoActions } from '../todo-actions/todo-actions.component';
+import { TodoPagination } from '../todo-pagination';
 import {
   StyledTable,
   TableBody,
@@ -11,34 +12,37 @@ import {
 } from './todo-table.styled';
 
 type ITodosTableProps = {
-  todos: ITodo[] | undefined;
+  data: IGetTodos | undefined;
 };
 
-export const TodosTable = ({ todos }: ITodosTableProps) => (
+export const TodosTable = ({ data }: ITodosTableProps) => (
   <div>
-    {todos?.length ? (
-      <TableContainer>
-        <StyledTable>
-          <TableHeader>
-            <TableRow>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {todos?.map((todo) => (
-              <TableRow key={todo.id}>
-                <TableCell>{todo.title}</TableCell>
-                <TableCell>{todo.description}</TableCell>
-                <TableCell>
-                  <TodoActions todo={todo} />
-                </TableCell>
+    {data?.todos?.length ? (
+      <>
+        <TableContainer>
+          <StyledTable>
+            <TableHeader>
+              <TableRow>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Actions</th>
               </TableRow>
-            ))}
-          </TableBody>
-        </StyledTable>
-      </TableContainer>
+            </TableHeader>
+            <TableBody>
+              {data.todos?.map((todo) => (
+                <TableRow key={todo.id}>
+                  <TableCell>{todo.title}</TableCell>
+                  <TableCell>{todo.description}</TableCell>
+                  <TableCell>
+                    <TodoActions todo={todo} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </StyledTable>
+        </TableContainer>
+        <TodoPagination count={data?.totalPages} page={data?.page} />
+      </>
     ) : (
       <h2>No todos found</h2>
     )}

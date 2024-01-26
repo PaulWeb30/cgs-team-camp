@@ -1,4 +1,5 @@
 import { FindOperator } from 'typeorm';
+import { Todo } from '../entities/Todo.entity';
 import { User } from '../entities/User.entity';
 
 export enum TodoStatus {
@@ -24,6 +25,16 @@ export interface ITodoFilters {
 }
 
 export interface IQueryFilters {
+  page?: string;
+  pageSize?: string;
   search?: string;
   status?: TodoStatus;
+}
+
+export interface TodoQueryResult {
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  todos: Todo[];
+  totalPages: number;
 }

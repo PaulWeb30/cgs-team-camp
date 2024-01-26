@@ -1,4 +1,4 @@
-import { ITodo } from '../common/types/todo.types';
+import { ITodo, IGetTodos, ITodoFilters } from '../common/types/todo.types';
 import { HttpService } from './http.service';
 import { APP_KEYS } from '../common/consts';
 
@@ -8,9 +8,9 @@ class TodoService extends HttpService {
     super();
   }
 
-  getTodos(search: string | null, status: string): Promise<ITodo[]> {
+  getTodos(data: ITodoFilters): Promise<IGetTodos> {
     return this.get({
-      url: APP_KEYS.BACKEND_KEYS.ROOT(search, status)
+      url: APP_KEYS.BACKEND_KEYS.ROOT(data.search, data.status, data.page)
     });
   }
 

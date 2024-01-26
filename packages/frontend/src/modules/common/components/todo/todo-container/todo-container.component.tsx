@@ -11,7 +11,7 @@ import { APP_KEYS } from '../../../consts';
 import { TodoPhone } from '../todo-phone/todo-phone.component';
 
 export const TodosContainer = () => {
-  const { todos, isLoading, isError } = useTodos();
+  const { data, isLoading, isError } = useTodos();
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -39,9 +39,9 @@ export const TodosContainer = () => {
       </Link>
       <ProfileButton onClick={() => changeModalState(true)}>Create todo</ProfileButton>
       <TodoHeader />
-      {isDesktop && <TodosTable todos={todos} />}
-      {isTablet && <TodoSlider todos={todos} />}
-      {isMobile && <TodoPhone todos={todos} />}
+      {isDesktop && <TodosTable data={data} />}
+      {isTablet && <TodoSlider />}
+      {isMobile && <TodoPhone data={data} />}
     </Container>
   );
 };

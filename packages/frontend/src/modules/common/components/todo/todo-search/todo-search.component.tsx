@@ -5,8 +5,9 @@ import { useTodos } from '../../../../hooks/useTodos';
 import { SearchInput } from './todo-search.styled';
 
 export const TodoSearch = () => {
-  const { refetch } = useTodos();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const { refetch } = useTodos();
   const initialValue = searchParams.get('search') || '';
 
   const [value, setValue] = React.useState<string>(initialValue);
@@ -18,13 +19,13 @@ export const TodoSearch = () => {
       searchParamsURL.set('search', inputValue);
       return searchParamsURL;
     });
+    if (!inputValue.length) {
+      setSearchParams((searchParamsURL) => {
+        searchParamsURL.delete('search');
+        return searchParamsURL;
+      });
+    }
   };
-
-  // React.useEffect(() => {
-  //   if (value) {
-  //     setSearchParams({ search: value });
-  //   }
-  // }, []);
 
   React.useEffect(() => {
     refetch();

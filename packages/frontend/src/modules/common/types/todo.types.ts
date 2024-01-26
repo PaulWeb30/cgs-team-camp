@@ -10,3 +10,17 @@ export interface ITodo {
   isCompleted: boolean;
   author?: TodoAuthor;
 }
+
+export interface IGetTodos {
+  todos: ITodo[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
+export interface ITodoFilters {
+  search: string;
+  status: string;
+  page: string;
+}
