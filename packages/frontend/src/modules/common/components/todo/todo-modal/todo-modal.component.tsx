@@ -1,7 +1,6 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useFormik } from 'formik';
-import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-
 import {
   ModalContainer,
   Overlay,
@@ -17,6 +16,7 @@ import {
 
 import { ITodo } from '../../../types/todo.types';
 import { useTodoActions } from '../../../../hooks/useTodoActions';
+import { CreateTodoSchema } from '../../../validations/schemas';
 
 type TodoModalProps = {
   onClose: (state: boolean) => void;
@@ -25,9 +25,7 @@ type TodoModalProps = {
 };
 
 export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProps) => {
-  const { updateTodo, createTodo } = useTodoActions();
-
-  const [errorMsg, setErrorMsg] = useState<string>('');
+  const { updateTodo, createTodo, errorMsg } = useTodoActions(() => onClose(false));
 
   const formik = useFormik({
     initialValues: {
@@ -35,34 +33,16 @@ export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProp
       description: todoInitials?.description || ''
     },
     onSubmit: async (values) => {
-      try {
-        if (isCreateMode) {
-          createTodo(values);
-        } else {
-          updateTodo({
-            id: todoInitials?.id,
-            data: { ...todoInitials, ...values } as ITodo
-          });
-        }
-      } catch (error) {
-        if (error instanceof Error) setErrorMsg(error.message);
-      } finally {
-        onClose(false);
+      if (isCreateMode) {
+        createTodo(values);
+      } else {
+        updateTodo({
+          id: todoInitials?.id,
+          data: { ...todoInitials, ...values } as ITodo
+        });
       }
     },
-    validate: (values) => {
-      const errors: { title?: string; description?: string } = {};
-
-      if (!values.title || values.title.length < 3) {
-        errors.title = 'Title is required, min 3 symbols';
-      }
-
-      if (!values.description || values.description.length < 5) {
-        errors.description = 'Description is required, min 5 symbols';
-      }
-
-      return errors;
-    }
+    validationSchema: CreateTodoSchema
   });
   return ReactDOM.createPortal(
     <Overlay>
@@ -98,7 +78,7 @@ export const TodoModal = ({ onClose, isCreateMode, todoInitials }: TodoModalProp
             {formik.errors.description && formik.touched.description && formik.errors.description}
           </ErrorMessage>
           <SubmitButton type="submit">{isCreateMode ? 'Create' : 'Update'}</SubmitButton>
-          <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
+          <ErrorDisplay>{errorMsg && errorMsg}</ErrorDisplay>
         </FormContainer>
       </ModalContainer>
     </Overlay>,

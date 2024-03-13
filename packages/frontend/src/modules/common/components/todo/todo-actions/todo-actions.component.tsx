@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useTodoActions } from '../../../../hooks/useTodoActions';
 import { APP_KEYS } from '../../../consts';
 import { ITodo } from '../../../types/todo.types';
@@ -17,19 +18,23 @@ type TodoActionsProps = {
 };
 
 export const TodoActions = ({ todo }: TodoActionsProps) => {
-  const { deleteTodo, updateTodo } = useTodoActions();
-
-  const [checkbox, setCheckbox] = useState<boolean>(todo.isCompleted);
+  const { deleteTodo, updateTodo, errorMsg } = useTodoActions();
 
   const deleteTodoHandler = () => {
     deleteTodo(todo.id);
   };
 
-  const checkboxOnChange = async () => {
-    const updatedCheckbox = !checkbox;
-    setCheckbox((prev: boolean) => !prev);
+  const checkboxOnChange = () => {
+    const updatedCheckbox = !todo.isCompleted;
     updateTodo({ id: todo?.id, data: { ...todo, isCompleted: updatedCheckbox } as ITodo });
   };
+
+  React.useEffect(() => {
+    if (errorMsg) {
+      toast(String(errorMsg));
+    }
+  }, [errorMsg]);
+
   return (
     <ActionsContainer>
       <Link to={APP_KEYS.BACKEND_KEYS.TODO(String(todo.id))}>
@@ -41,7 +46,7 @@ export const TodoActions = ({ todo }: TodoActionsProps) => {
           id="input"
           type="checkbox"
           disabled={false}
-          checked={checkbox}
+          checked={todo.isCompleted}
           onChange={checkboxOnChange}
         />
         <Slider />

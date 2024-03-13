@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../../../../hooks/useAuth';
 import { APP_KEYS } from '../../../consts';
 import { GoBack } from '../../todo/goBack/goBack.component';
+import { Loader } from '../../todo/loader';
 
 export const AuthLogin = () => {
   const location = useLocation();
@@ -40,6 +41,11 @@ export const AuthLogin = () => {
     },
     validationSchema: LoginSchema
   });
+
+  if (login.isLoading) {
+    return <Loader />;
+  }
+
   return (
     <Container>
       <FormSecond onSubmit={formik.handleSubmit}>

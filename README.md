@@ -1,7 +1,5 @@
 # CGS Test project
 
-> For This project use [MERN stack](https://www.mongodb.com/languages/mern-stack-tutorial)
-
 ## Project commands
 
 `yarn start` - to launch your project  
@@ -22,19 +20,6 @@ Watch this video:
 9. Run command `yarn start`
 
 Now you can run project by calling `yarn start`
-
-Avoid Upper case! Do not use `N_Surname` syntax or `Implement-Crud-Todo` syntax
-
-If you keep experiencing something like: **tslint: command not found**
-please do the following:
-
-```
-
-yarn global add tslint typescript
-
-```
-
-link: https://stackoverflow.com/questions/36910592/enabling-eslint-on-typescript-files/64175035#64175035
 
 ## Time-frames
 
@@ -104,13 +89,10 @@ Design: [drive.google](https://drive.google.com/file/d/1PcusGdHTmD4qzhKRJnd9pk2j
 ## Useful links and technologies
 
 [Corporate Codestyle](https://github.com/CodeGeneration-2020/code-generation-code-style)  
-[Formik](https://formik.org/docs/overview)  
-[Mongoose](https://mongoosejs.com/)  
+[Formik](https://formik.org/docs/overview)   
 [Typescript](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html)  
 [Passport](http://www.passportjs.org/)  
 [React Query](https://react-query.tanstack.com/)  
-[Styled component](https://styled-components.com/)  
-
-```
+[Styled component](https://styled-components.com/)
 
 ```

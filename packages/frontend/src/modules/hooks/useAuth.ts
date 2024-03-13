@@ -33,7 +33,7 @@ export const useAuth = ({ fromPage }: IUseAuthProps) => {
 
   const logout = useMutation(() => authService.logout(), {
     onSuccess: () => {
-      navigate(APP_KEYS.ROUTER_KEYS.LOGIN);
+      navigate(APP_KEYS.ROUTER_KEYS.AUTH);
     }
   });
 
@@ -42,6 +42,7 @@ export const useAuth = ({ fromPage }: IUseAuthProps) => {
       authService.changePassword(data.oldPassword, data.password),
     {
       onSuccess: () => {
+        authService.logout();
         navigate(APP_KEYS.ROUTER_KEYS.LOGIN);
       }
     }

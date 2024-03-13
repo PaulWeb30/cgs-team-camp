@@ -9,6 +9,7 @@ import { TodoModal } from '../todo-modal';
 import { useTodos } from '../../../../hooks/useTodos';
 import { APP_KEYS } from '../../../consts';
 import { TodoPhone } from '../todo-phone/todo-phone.component';
+import { Loader } from '../loader';
 
 export const TodosContainer = () => {
   const { data, isLoading, isError } = useTodos();
@@ -24,11 +25,11 @@ export const TodosContainer = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 679px)' });
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <Loader />;
   }
 
   if (isError) {
-    return <h1>Error happened...</h1>;
+    return <h1>Error happend</h1>;
   }
 
   return (
@@ -41,7 +42,7 @@ export const TodosContainer = () => {
       <TodoHeader />
       {isDesktop && <TodosTable data={data} />}
       {isTablet && <TodoSlider />}
-      {isMobile && <TodoPhone data={data} />}
+      {isMobile && <TodoPhone />}
     </Container>
   );
 };

@@ -1,9 +1,12 @@
+import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { APP_KEYS } from '../common/consts';
 import { ITodo } from '../common/types/todo.types';
 import todoService from '../service/todo.service';
 
-export const useTodoActions = () => {
+export const useTodoActions = (callback?: () => void) => {
+  const [errorMsg, setErrorMsg] = useState<string>('');
   const queryClient = useQueryClient();
 
   const updateTodoMutation = useMutation(
@@ -13,6 +16,13 @@ export const useTodoActions = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODO);
         queryClient.refetchQueries(APP_KEYS.QUERY_KEYS.TODOS);
+        setErrorMsg('Todo updated successfully');
+        if (callback) callback();
+      },
+      onError: (error) => {
+        if (!(error instanceof AxiosError)) return;
+        if (!error.response?.data) return;
+        setErrorMsg(error?.response?.data?.message);
       }
     }
   );
@@ -22,6 +32,12 @@ export const useTodoActions = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODOS);
+        setErrorMsg('Todo deleted successfully');
+      },
+      onError: (error) => {
+        if (!(error instanceof AxiosError)) return;
+        if (!error.response?.data) return;
+        setErrorMsg(error?.response?.data?.message);
       }
     }
   );
@@ -32,6 +48,13 @@ export const useTodoActions = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODOS);
         queryClient.invalidateQueries(APP_KEYS.QUERY_KEYS.TODO);
+        setErrorMsg('Todo created successfully');
+        if (callback) callback();
+      },
+      onError: (error) => {
+        if (!(error instanceof AxiosError)) return;
+        if (!error.response?.data) return;
+        setErrorMsg(error?.response?.data?.message);
       }
     }
   );
@@ -51,6 +74,7 @@ export const useTodoActions = () => {
   return {
     createTodo,
     updateTodo,
-    deleteTodo
+    deleteTodo,
+    errorMsg
   };
 };

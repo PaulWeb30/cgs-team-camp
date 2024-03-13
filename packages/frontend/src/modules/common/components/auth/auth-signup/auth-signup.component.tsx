@@ -15,6 +15,7 @@ import {
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
 import { GoBack } from '../../todo/goBack/goBack.component';
+import { Loader } from '../../todo/loader';
 
 export const AuthSignup = () => {
   const location = useLocation();
@@ -40,6 +41,11 @@ export const AuthSignup = () => {
     },
     validationSchema: SignupSchema
   });
+
+  if (signup.isLoading) {
+    return <Loader />;
+  }
+
   return (
     <Container>
       <FormSecond onSubmit={formik.handleSubmit}>

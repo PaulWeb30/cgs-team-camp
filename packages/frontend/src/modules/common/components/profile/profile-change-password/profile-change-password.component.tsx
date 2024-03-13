@@ -11,6 +11,7 @@ import {
   ErrorMessage
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
+import { Loader } from '../../todo/loader';
 
 export const ProfileChangePassword = () => {
   const { changePassword } = useAuth({ fromPage: null });
@@ -33,6 +34,11 @@ export const ProfileChangePassword = () => {
     },
     validationSchema: ChangePasswordSchema
   });
+
+  if (changePassword.isLoading) {
+    return <Loader />;
+  }
+
   return (
     <FormSecond onSubmit={formik.handleSubmit}>
       <InputField

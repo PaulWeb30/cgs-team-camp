@@ -4,7 +4,12 @@ import passport from 'passport';
 import todoController from '../../controllers/todo.controller';
 
 import { todoValidationSchema } from '../../validation/schemas';
-import { checkIsBodyValid, isExist, isAuthor } from '../../middlewares/common.middleware';
+import {
+  checkIsBodyValid,
+  isExist,
+  isAuthor,
+  isPrivate
+} from '../../middlewares/common.middleware';
 import { checkEmailIsVerified } from '../../middlewares/auth.middleware';
 
 import { Todo } from '../../entities/Todo.entity';
@@ -21,7 +26,7 @@ todosRouter.get(
   '/:id',
   passport.authenticate('jwt', { session: false }),
   isExist(Todo),
-  isAuthor,
+  isPrivate,
   todoController.getTodo.bind(todoController)
 );
 
@@ -38,6 +43,7 @@ todosRouter.put(
   checkIsBodyValid(todoValidationSchema),
   passport.authenticate('jwt', { session: false }),
   isExist(Todo),
+  isAuthor,
   todoController.updateTodo.bind(todoController)
 );
 

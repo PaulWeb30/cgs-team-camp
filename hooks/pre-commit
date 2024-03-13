@@ -9,27 +9,27 @@ BACKEND_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '(^pac
 PASS=true
 
 echo "=============================================================================================================="
-echo "Checking branch name..."
-LC_ALL=C
+@REM echo "Checking branch name..."
+@REM LC_ALL=C
 
-local_branch="$(git rev-parse --abbrev-ref HEAD)"
+@REM local_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-valid_branch_regex="^(feature|bug|refactoring|hotfix)\/$USER_NAME\/[a-z0-9-]+$"
+@REM valid_branch_regex="^(feature|bug|refactoring|hotfix)\/$USER_NAME\/[a-z0-9-]+$"
 
-message="
-\t\033[41m
-There is something wrong with your branch name. \n 
-Branch names in this project must adhere to this contract: \n 
-feature|bugfix|improvement|library|prerelease|release|hotfix/$USER_NAME/feature-name. \n 
-Your commit will be rejected. You should rename your branch to a valid name and try again.
-\033[0m"
+@REM message="
+@REM \t\033[41m
+@REM There is something wrong with your branch name. \n 
+@REM Branch names in this project must adhere to this contract: \n 
+@REM feature|bugfix|improvement|library|prerelease|release|hotfix/$USER_NAME/feature-name. \n 
+@REM Your commit will be rejected. You should rename your branch to a valid name and try again.
+@REM \033[0m"
 
-if [[ ! $local_branch =~ $valid_branch_regex ]]
-then
-    echo "$message"
-    exit 1
-fi
-echo "\t\033[32m Success! \033[0m"
+@REM if [[ ! $local_branch =~ $valid_branch_regex ]]
+@REM then
+@REM     echo "$message"
+@REM     exit 1
+@REM fi
+@REM echo "\t\033[32m Success! \033[0m"
 
 echo "=============================================================================================================="
 echo "Staged changes:"

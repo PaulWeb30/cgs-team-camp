@@ -12,6 +12,7 @@ import {
   ErrorMessage
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
+import { Loader } from '../../todo/loader';
 
 export const AuthForgot = () => {
   const { actionToken } = useParams();
@@ -38,6 +39,10 @@ export const AuthForgot = () => {
     },
     validationSchema: ForgotPasswordSchema
   });
+
+  if (forgotPassword.isLoading) {
+    return <Loader />;
+  }
   return (
     <Container>
       <FormSecond onSubmit={formik.handleSubmit}>

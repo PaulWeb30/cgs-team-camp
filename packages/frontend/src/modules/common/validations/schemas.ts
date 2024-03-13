@@ -43,3 +43,8 @@ export const ForgotPasswordSchema = Yup.object().shape({
 export const RequestForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required')
 });
+
+export const CreateTodoSchema = Yup.object().shape({
+  title: Yup.string().min(3, 'Min 3 symbols').required('Title required'),
+  description: Yup.string().min(5, 'Min 5 symbols').required('Description required')
+});

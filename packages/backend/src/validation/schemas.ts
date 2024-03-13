@@ -8,3 +8,16 @@ export const todoValidationSchema = Joi.object({
   isCompleted: Joi.boolean(),
   author: Joi.object()
 });
+
+export const authValidationSchema = Joi.object({
+  email: Joi.string().email(),
+  password: Joi.string()
+});
+
+export const forgotPasswordSchema = Joi.object({
+  password: Joi.string()
+});
+
+export const requestPasswordSchema = Joi.object({
+  email: Joi.string().email()
+});

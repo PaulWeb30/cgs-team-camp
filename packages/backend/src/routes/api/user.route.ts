@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
 import { isActionTokenValid } from '../../middlewares/auth.middleware';
+import { checkIsBodyValid } from '../../middlewares/common.middleware';
 import userController from '../../controllers/user.controller';
+import { authValidationSchema } from '../../validation/schemas';
 
 const userRouter: Router = Router();
 
@@ -9,9 +11,17 @@ userRouter.get('/', userController.getAllUsers.bind(userController));
 
 userRouter.get('/:id', userController.getUser.bind(userController));
 
-userRouter.post('/signup', userController.signup.bind(userController));
+userRouter.post(
+  '/signup',
+  checkIsBodyValid(authValidationSchema),
+  userController.signup.bind(userController)
+);
 
-userRouter.post('/login', userController.login.bind(userController));
+userRouter.post(
+  '/login',
+  checkIsBodyValid(authValidationSchema),
+  userController.login.bind(userController)
+);
 
 userRouter.get(
   '/activationLink/:token',

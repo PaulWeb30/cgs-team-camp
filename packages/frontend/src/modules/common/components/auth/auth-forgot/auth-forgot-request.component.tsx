@@ -11,6 +11,7 @@ import {
   ErrorMessage
 } from '../../todo/todo-modal/todo-modal.styled';
 import { useAuth } from '../../../../hooks/useAuth';
+import { Loader } from '../../todo/loader';
 
 export const AuthForgotRequest = () => {
   const { requestForgotPassword } = useAuth({ fromPage: null });
@@ -26,11 +27,18 @@ export const AuthForgotRequest = () => {
           if (!(e instanceof AxiosError)) return;
           if (!e.response?.data) return;
           setErrorMsg(e?.response?.data?.message);
+        },
+        onSuccess: () => {
+          setErrorMsg('Restore link has been sended');
         }
       });
     },
     validationSchema: RequestForgotPasswordSchema
   });
+
+  if (requestForgotPassword.isLoading) {
+    return <Loader />;
+  }
   return (
     <Container>
       <FormContainer onSubmit={formik.handleSubmit}>
@@ -46,7 +54,7 @@ export const AuthForgotRequest = () => {
           {formik.errors.email && formik.touched.email && formik.errors.email}
         </ErrorMessage>
         <SubmitButton type="submit">Send link</SubmitButton>
-        <ErrorDisplay>{errorMsg && `Error happened - ${errorMsg}`}</ErrorDisplay>
+        <ErrorDisplay>{errorMsg && errorMsg}</ErrorDisplay>
       </FormContainer>
     </Container>
   );

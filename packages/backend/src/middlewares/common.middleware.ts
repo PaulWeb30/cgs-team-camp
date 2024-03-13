@@ -62,7 +62,27 @@ export const isAuthor = async (req: Request, res: Response, next: NextFunction) 
     const authorId = todo?.author?.id;
 
     if (authorId !== userId) {
-      throw new Error('NO_AUTHOR');
+      throw new Error('You are not author');
+    }
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const isPrivate = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user;
+    const { id: todoId } = req.params;
+
+    const todo = await todoService.findOne({ id: todoId });
+
+    const authorId = todo?.author?.id;
+    const isPrivateTodo = todo?.isPrivate;
+
+    if (authorId !== userId && isPrivateTodo) {
+      throw new Error('This is private todo');
     }
 
     next();

@@ -23,7 +23,7 @@ export class UserController {
       const userExisted = await this.userService.findOne({ email: body.email });
 
       if (userExisted) {
-        throw new Error('User alreaddy exists');
+        throw new Error('User already exists');
       }
       const passwordHash = await this.userService.hashPassword(body.password);
       const user = await this.userService.createUser({ ...body, passwordHash });
@@ -32,7 +32,7 @@ export class UserController {
       const activationToken = await this.userService.generateToken({ email: user.email });
 
       const activationLink = `${process.env.SERVER_URL}/users/activationLink/${activationToken}`;
-      await sendEmail(user.email, activationLink);
+      await sendEmail(user.email, activationLink, 'VERIFICATION');
 
       res.status(201).json({ user, token, message: 'SIGNUP_SUCCESSFUL' });
     } catch (e) {
@@ -74,7 +74,7 @@ export class UserController {
       const activationToken = await this.userService.generateToken({ email: user.email });
 
       const activationLink = `${process.env.CLIENT_URL}/auth/forgotPassword/${activationToken}`;
-      await sendEmail(user.email, activationLink);
+      await sendEmail(user.email, activationLink, 'FORGOT_PASSWORD');
 
       res.status(200).json({ message: 'REQUEST_FORGOT_PASSWORD_SUCCESSFUL' });
     } catch (e) {
@@ -141,7 +141,7 @@ export class UserController {
 
       await this.userService.updateUser(user?.id!, { ...user, isVerified: true });
 
-      res.status(200).json({ message: 'VERIFIED_SUCCESSFUL' });
+      res.redirect(process.env.CLIENT_URL || 'http://localhost:3000');
     } catch (e) {
       next(e);
     }
